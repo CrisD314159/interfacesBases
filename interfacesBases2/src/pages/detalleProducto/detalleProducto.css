@@ -1,0 +1,103 @@
+.mainProductDescContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainProductContainer{
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #eeeded;
+  border-radius: 40px;
+  padding: 15px 0;
+}
+
+.productContainer{
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  padding: 15px 0;
+}
+.imgContainer{
+  width: 50%;
+
+}
+
+.productImg{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.productDescriptionContainer{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.productTitle{
+  font-size: 25px;
+  font-weight: 400;
+  color: #141313;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+
+.productDescription{
+  font-size: 15px;
+  font-weight: 300;
+  color: #141313;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+.productPrice{
+  font-size: 15px;
+  font-weight: 300;
+  color: #141313;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+
+.titleOfertas{
+  font-size: 25px;
+  font-weight: 400;
+  color: #141313;
+  font-family: sans-serif;
+  margin: 40px;
+}
+
+.ofertasContainer{
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  background-color: #eeeded;
+  border-radius: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.ofertaContainer{
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 10px;
+  border-bottom: 1px solid #d8d6d6;
+}
+.nombreVendedor{
+  font-size: 15px;
+  font-weight: 300;
+  color: #141313;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}

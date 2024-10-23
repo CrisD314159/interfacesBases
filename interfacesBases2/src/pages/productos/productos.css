@@ -1,0 +1,99 @@
+.productsMainContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.productosTitle{
+  font-size: 30px;
+  font-weight: 400;
+  margin: 20px 0;
+  color: #141313;
+  font-family: sans-serif;
+}
+
+.productosContainer{
+  width: 95%;
+  border-radius: 50px;
+  background-color: #eeeded;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 60px;
+}
+.productosList{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.productoCard{
+  width: 30%;
+  height: 350px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 10px;
+  position: relative;
+
+}
+
+.productoImageContainer{
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.productoImageContainer> img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.productoInfoContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 10px;
+}
+
+.productoName{
+  font-size: 20px;
+  font-weight: 400;
+  color: #141313;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+
+.productoDescription{
+  font-size: 15px;
+  font-weight: 300;
+  color: #141313;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+
+.productoPrice{
+  font-size: 15px;
+  font-weight: 400;
+  color: #141313;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+
+.productLink{
+  position: absolute;
+  bottom: 20px;
+}

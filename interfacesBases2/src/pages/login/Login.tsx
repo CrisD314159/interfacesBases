@@ -6,6 +6,14 @@ export default function Login(){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const handleSubmit = ()=>{
+    const login = {
+      email,
+      password
+    }
+    console.log(login);
+  }
+
   return(
     <div className="mainLoginContainer">
       <div className="mainFormContainer">
@@ -13,7 +21,11 @@ export default function Login(){
           <h3 className="formTitle">Inicia Sesión</h3>
         </div>
         <div className="formContiner">
-          <form action="" className="loginForm">
+          <form action="" className="loginForm" onSubmit={(e)=>{
+            e.preventDefault()
+            handleSubmit()
+
+          }}>
             <TextField id="outlined-basic" type="email" label="E-mail" variant="outlined" sx={{marginBottom:'25px', width:'100%'}}
               onChange={(e)=>{
                 setEmail(e.target.value)
@@ -29,10 +41,7 @@ export default function Login(){
             required
             />
             <Button variant="contained" sx={{marginTop:'25px', width:'100%'}}
-            onClick={()=>{
-              console.log('Email:', email)
-              console.log('Password', password)
-            }}
+           type="submit"
             >Iniciar Sesión</Button>
           </form>
         </div>
