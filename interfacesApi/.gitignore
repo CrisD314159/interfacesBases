@@ -1,0 +1,5 @@
+### Node template
+node_modules
+
+### evironment file
+.env

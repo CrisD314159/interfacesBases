@@ -1,0 +1,2 @@
+### para hacer peticiones a la api
+GET http://localhost:3000/api/ruta
