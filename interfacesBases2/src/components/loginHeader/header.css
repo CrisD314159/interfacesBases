@@ -1,0 +1,23 @@
+.headerComponent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  padding: 0 30px;
+}
+
+.headerTitle{
+  font-size: 25px;
+  font-weight: 300;
+  color: #141313;
+  font-family: sans-serif;
+}
+.navContainer{
+  width: 55%;
+}
+.navList{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}

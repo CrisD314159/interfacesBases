@@ -1,6 +1,7 @@
 import { NavLink, useParams } from "react-router-dom"
 import './despachos.css'
 import { Button } from "@mui/material"
+import LoginHeader from "../../components/loginHeader/LoginHeader";
 
 export default function Despachos(){
   const {id} = useParams() // se saca el id del localstorage, por ahora usar useParams
@@ -56,12 +57,7 @@ export default function Despachos(){
   ]
   return(
     <div>
-      <header className="despachosHeader">
-        <h1 className="headerTitle">Despachos</h1>
-        <nav>
-          <NavLink to={'/'} className="cerrarsesionLink"><Button variant="contained">Cerrar Sesión</Button></NavLink>
-        </nav>
-      </header>
+      <LoginHeader/>
       <div className="despachosMainContainer">
         <div className="despachosList">
           {

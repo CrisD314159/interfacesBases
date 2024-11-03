@@ -1,41 +1,55 @@
-import { Button } from "@mui/material"
-import Header from "../../components/header/Header"
-import './productos.css'
 import { NavLink } from "react-router-dom"
+import LoginHeader from "../../components/loginHeader/LoginHeader"
+import './misProductos.css'
+import { Button } from "@mui/material"
 
-export default function Productos(){
+export default function MisProductos(){
   const ejemploProductos = [
     {
       id: 1,
       nombre: 'Producto 1',
       precio: 1000,
       descripcion: 'Descripcion del producto 1',
-      imagen: ''
+      imagen: '',
+      cantidadInventario: 20
     },
     {
       id: 2,
       nombre: 'Producto 2',
       precio: 2000,
       descripcion: 'Descripcion del producto 2',
-      imagen: ''
+      imagen: '',
+      cantidadInventario: 32
     },
     {
       id: 3,
       nombre: 'Producto 3',
       precio: 3000,
       descripcion: 'Descripcion del producto 3',
-      imagen: ''
+      imagen: '',
+      cantidadInventario: 12
+    },
+    {
+      id: 3,
+      nombre: 'Producto 3',
+      precio: 3000,
+      descripcion: 'Descripcion del producto 3',
+      imagen: '',
+      cantidadInventario: 12
     }
   ]
   return(
     <div>
-      <Header/>
-      <div className="productsMainContainer">
-        <h1 className="productosTitle">Productos Destacados en VitalisPro</h1>
-        <NavLink to={'/misProductos'} className="productLink"><Button variant="outlined">Añadir al inventario</Button></NavLink>
-        <div className="productosContainer">
-          <div className="productosList">
-            {
+      <LoginHeader/>
+      <div className="productos">
+        <div>
+        <h1 className="productosTitle">MisProductos</h1>
+        <NavLink to={'/pedirProductos'}><Button variant="outlined">Añadir más al inventario</Button></NavLink>
+
+        </div>
+        
+        <div className="productosList">
+        {
               ejemploProductos.map((producto)=>{
                 return(
                   <div key={producto.id} className="productoCard">
@@ -51,18 +65,14 @@ export default function Productos(){
                       <h3 className="productoName">{producto.nombre}</h3>
                       <p className="productoDescription">{producto.descripcion}</p>
                       <p className="productoPrice">Precio: ${producto.precio}</p>
+                      <p className="productoPrice">Cantidad en invetario: {producto.cantidadInventario}</p>
                     </div>
-                    <NavLink to={`/producto/${producto.id}`} className="productLink">
-                      <Button variant="contained">Ver Detalle</Button>
-
-                    </NavLink>
                   </div>
                 )  
               })
             }
-
-          </div>
         </div>
+
       </div>
     </div>
   )

@@ -1,0 +1,31 @@
+.estadoEnvioMainContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.estadoEnvioTitle{
+    font-size: 27px;
+    font-weight: 400;
+    font-family: sans-serif;
+    margin-bottom: 20px;
+}
+
+.estadoEnvioForm{
+  margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.detalleEnvioMain{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

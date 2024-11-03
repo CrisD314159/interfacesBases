@@ -1,0 +1,25 @@
+.detalleDespachoCard{
+    margin-top: 10px;
+    width: 90%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+
+}
+
+.detalleDespachoMainCard{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.despachoP{
+    font-size: 20px;
+    font-weight: 300;
+    color: #141313;
+    font-family: sans-serif;
+    margin-top: 10px;
+}
