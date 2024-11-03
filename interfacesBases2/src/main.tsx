@@ -8,6 +8,7 @@ import SignUp from './pages/signUp/SignUp.tsx'
 import DetalleProducto from './pages/detalleProducto/DetalleProducto.tsx'
 import Checkout from './pages/checkout/Checkout.tsx'
 import Despachos from './pages/despachos/Despachos.tsx'
+import Dashboard from './pages/dashboard/Dashboard.tsx'
 
 
 
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/producto/:id" element={<DetalleProducto/>}/>
         <Route path="/checkout/:id" element={<Checkout/>}/>
         <Route path="/despachos/:id" element={<Despachos/>}/>
+        <Route path='/dashboard' element={<Dashboard/>}/>
       </Routes>
     </BrowserRouter>
   </StrictMode>,
