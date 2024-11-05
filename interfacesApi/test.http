@@ -1,2 +1,11 @@
 ### para hacer peticiones a la api
-GET http://localhost:3000/api/ruta
+GET http://localhost:3000/api/getExampleUsers
+
+
+### Create user
+POST http://localhost:3000/api/getExampleUsers
+
+
+
+### Create user
+POST http://localhost:3000/api/initDB
