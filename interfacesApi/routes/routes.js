@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { getHelloAsync } from "../model/methods.js";
 import { getConnection } from "oracledb";
-import { afiliar } from "../model/personalMethods.js"
+import * as pm from "../model/personalMethods.js"
+import * as prodm from "../model/productoMethods.js"
 
 export const router = Router(); // Crea la instancia de Router para establecer las rutas
 
@@ -14,64 +15,35 @@ router.get("/", (req, res) => { // se pueden establecer rutas con los métodos H
 
 router.post("/getHello", getHelloAsync); // tmabien se pueden llamar a otras funciones que se encuentren en otro archivo para especificar la lógica de la app
 
-//------------- Endpoints personal -------------// afiliar a alguien
-router.post("/crearUsuario", afiliar)
+//------------- Endpoints personal -------------//
+router.post("/crearUsuario", pm.afiliar)
 
-router.get("/obtenerUsuario", (req, res) =>{
-  //llamar metodo para obtener un usuario en especifico
+router.get("/obtenerUsuario", pm.obtenerVendedor)
+
+router.get("/obtenerUsuarios", pm.obtenerVendedores)
+
+router.put("/actualizarUsuario", pm.actualizarVendedor)
+
+router.delete("/eliminarUsuario", pm.eliminarVendedor)
+
+router.get("/obtenerNivel", pm.obtenerNivel)
+
+router.post("/actualizarComision", (req, res) =>{ //duda
   res.send()
 })
 
-router.get("/obtenerUsuarios", (req, res) =>{
-  //llamar metodo para obtener todos los usuarios
-  res.send()
-})
-
-router.put("/actualizarUsuario", (req, res) =>{
-  //llamar metodo para actualizar usuario
-  res.send()
-})
-
-router.delete("/eliminarUsuario", (req, res) =>{
-  //llamar metodo para eliminar usuario
-  res.send()
-})
-
-router.get("/obtenerNivel", (req, res) =>{
-  //llamar metodo para obtener el nivel en el cual se encuentra un afiliado
-  res.send()
-})
-
-router.post("/actualizarComision", (req, res) =>{
-  res.send()
-})
-
+//duda con el nivel//
 
 //------------- Endpoints productos -------------//
-router.post("/agregarProducto", (req,res)=>{
-  //llamar metodo para agregar productos
-  res.send()
-})
+router.post("/agregarProducto", ) //duda
 
-router.get("/obtenerProducto", (req,res)=>{
-  //llamar metodo para obtener un producto en especifico
-  res.send()
-})
+router.get("/obtenerProducto", prodm.obtenerProducto)
 
-router.get("/obtenerProductos", (req,res)=>{
-  //llamar metodo para obtener todos los productos
-  res.send()
-})
+router.get("/obtenerProductos", prodm.obtenerProductos)
 
-router.put("/actualizarProducto", (req,res)=>{
-  //llamar metodo para actualizar un producto
-  res.send()
-})
+router.put("/actualizarProducto", prodm.actualizarProducto)
 
-router.delete("/eliminarProducto", (req,res)=>{
-  //llamar metodo para eliminar un producto
-  res.send()
-})
+router.delete("/eliminarProducto", ) //duda
 
 
 //------------- Endpoints ventas -------------//
