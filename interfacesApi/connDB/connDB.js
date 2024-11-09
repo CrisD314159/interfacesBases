@@ -2,9 +2,9 @@ import oracleDB from "oracledb";
 
 
 const dbConfig = {
-  user: 'system',
+  user: 'C##VITALIS',
   password: '12345678',
-  connectString: 'localhost:1521/xe'
+  connectString: 'localhost:1521'
 };
 
 

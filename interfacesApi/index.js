@@ -18,3 +18,5 @@ app.listen(port, ()=>{ // Inicia el servidor en el puerto 3000
 
 
 // para levantar el servidor se ejecuta el comando npm run dev
+
+// Para esta api, primero de debe crear en el oracle express el usuario C##VITALIS con la contraseña 12345678 y con todos sus permisos
