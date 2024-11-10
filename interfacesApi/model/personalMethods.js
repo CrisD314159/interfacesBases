@@ -1,10 +1,10 @@
-export const afiliar = async (req, res) => {
+export const crearVendedor = async (req, res) => {
     try {
         const {
-            codigo, nombre, apellido, telefono, email
+            id, nombre, apellido, telefono, email, id_referido, id_direccion, id_nivel
         } = req.body
         const connection = await getConnection()
-        const respuesta = await connection.execute("INSERT INTO Vendedor(id,nombre,apellido,telefono, email) VALUES(:codigo, :nombre, :apellido, :telefono, :email)")
+        const respuesta = await connection.execute("INSERT INTO Vendedor VALUES(:1, :2, :3, :4, :5, :6, :7, :8)", [id, nombre, apellido, telefono, email, id_referido, id_direccion, id_nivel], { resultSet: true, outFormat: oracledb.OUT_FORMAT_OBJECT })
         res.json({ mensaje: respuesta }).status(200)
     } catch (err) {
         console.error('Error al ejecutar la consulta:', err);
@@ -24,7 +24,16 @@ export const obtenerVendedor = async (req, res) => {
     try {
         const {codigo} = req.body
         const connection = await getConnection()
-        const respuesta = await connection.execute("SELECT codigo, nombre, apellido, telefono, email FROM Vendedor WHERE codigo = :codigo")
+        const respuesta = await connection.execute("SELECT * FROM Vendedor WHERE id = :1",[codigo], { resultSet: true, outFormat: oracledb.OUT_FORMAT_OBJECT })
+
+        const rs = result.resultSet; 
+        let rows = []; 
+        let row;
+
+        while ((row = await rs.getRow())) { 
+            rows.push(row); 
+        }
+
         res.json({ mensaje: respuesta }).status(200)
     } catch (err) {
         console.error('Error al ejecutar la consulta:', err);
@@ -43,7 +52,16 @@ export const obtenerVendedor = async (req, res) => {
 export const obtenerVendedores = async (req, res) => {
     try {
         const connection = await getConnection()
-        const respuesta = await connection.execute("SELECT codigo, nombre, apellido, telefono, email FROM Vendedor")
+        const respuesta = await connection.execute("SELECT * FROM Vendedor", [], { resultSet: true, outFormat: oracledb.OUT_FORMAT_OBJECT })
+
+        const rs = result.resultSet; 
+        let rows = []; 
+        let row;
+
+        while ((row = await rs.getRow())) { 
+            rows.push(row); 
+        }
+
         res.json(respuesta.rows)
     } catch (err) {
         console.error('Error al ejecutar la consulta:', err);
@@ -62,10 +80,31 @@ export const obtenerVendedores = async (req, res) => {
 export const actualizarVendedor = async (req, res) => {
     try {
         const {
-            codigo, telefono, email
+            id, nombre, apellido, telefono, email, id_direccion, id_nivel
         } = req.body
         const connection = await getConnection()
-        const respuesta = await connection.execute("UPDATE Vendedor SET telefono=:telefono, email=:email WHERE codigo=:codigo")
+        const respuesta = await connection.execute("llamar el procedimiento",[id, nombre, apellido, telefono, email, id_direccion, id_nivel], { resultSet: true, outFormat: oracledb.OUT_FORMAT_OBJECT })
+        res.json({mensaje:respuesta}).status(200)
+    } catch (err) {
+        console.error('Error al ejecutar la consulta:', err);
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error al cerrar la conexion:', err);
+            }
+        }
+    }
+}
+
+export const actualizarNivelVendedor = async (req, res) => {
+    try {
+        const {
+            id, id_nivel
+        } = req.body
+        const connection = await getConnection()
+        const respuesta = await connection.execute("UPDATE Vendedor SET id_nivel =:2 WHERE id=:1",[], { resultSet: true, outFormat: oracledb.OUT_FORMAT_OBJECT })
         res.json({mensaje:respuesta}).status(200)
     } catch (err) {
         console.error('Error al ejecutar la consulta:', err);
