@@ -2,22 +2,53 @@ import { Button, TextField } from "@mui/material"
 import Header from "../../components/header/Header"
 import { useState } from "react"
 import './estadoEnvio.css'
+import { useMutation } from "@tanstack/react-query"
 
+
+
+export interface Envio{
+  ID_ENVIO: number,
+  ESTADO: string,
+  DIRECCION: string,
+  CIUDAD: string,
+  FECHA: string,
+  VENDEDOR: string,
+
+}
+
+
+interface EnvioResponse{
+  success: boolean,
+  data: Envio
+}
 export default function EstadoEnvio(){
+  const [envio, setEnvio] = useState<Envio>()
   const [id, setId] = useState('')
   const [num, setNum] = useState(0)
-  const envio = {
-    id: 1,
-    nombre: 'Despacho 1',
-    direccion: 'Calle 1 # 1-1',
-    ciudad: 'Bogotá',
-    fecha: '2021-12-31',
-    hora: '10:00',
-    estado: 'En camino',
-  }
+
+
+  const envioMutation = useMutation<EnvioResponse, Error, string>({
+    mutationFn: async (id) => {
+      const response = await fetch(`http://localhost:3000/api/obtenerDetalleEnvio/${id}`)
+      const data = await response.json()
+      return data
+    },
+    onSuccess: (data) => {
+      if(data.success){
+        setEnvio(data.data)
+        setNum(1)
+      }else{
+        alert('No se encontró el envío')}
+    },
+    onError: (error) => {
+      console.error(error)
+    }
+  })
 
   const handleSubmit = () => {
-    setNum(1)
+    if(id){
+      envioMutation.mutate(id)
+    }
     
       
     
@@ -39,13 +70,12 @@ export default function EstadoEnvio(){
         <div className="detalleEnvioMain">
           {
             num === 1 &&(
-            <div key={envio.id} className="detalleDespachoCard">
-              <h2 className="despachoName despachoP">Nombre: {envio.nombre}</h2>
-              <p className="despachoDireccion despachoP">Dirección: {envio.direccion}</p>
-              <p className="despachoCiudad despachoP">Ciudad: {envio.ciudad}</p>
-              <p className="despachoFecha despachoP">Fecha: {envio.fecha}</p>
-              <p className="despachoHora despachoP">Hora: {envio.hora}</p>
-              <p className="despachoEstado despachoP">Estado: {envio.estado}</p>
+            <div key={envio?.ID_ENVIO} className="detalleDespachoCard">
+              <h2 className="despachoName despachoP">Nombre del Vendedor: {envio?.VENDEDOR}</h2>
+              <p className="despachoDireccion despachoP">Dirección: {envio?.DIRECCION}</p>
+              <p className="despachoCiudad despachoP">Ciudad: {envio?.CIUDAD}</p>
+              <p className="despachoFecha despachoP">Fecha: {envio?.FECHA}</p>
+              <p className="despachoEstado despachoP">Estado: {envio?.ESTADO}</p>
             </div>
             )
           }

@@ -13,12 +13,19 @@ import DetalleDespacho from './pages/detalleDespacho/DetalleDespacho.tsx'
 import EstadoEnvio from './pages/estadoEnvio/EstadoEnvio.tsx'
 import MisProductos from './pages/misProductos/MisProductos.tsx'
 import SolicitarProductos from './pages/solicitarProducto/SolicitarProductos.tsx'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Profile from './pages/profile/Profile.tsx'
+import ReporteEstadisticas from './pages/reporteEstadisticas/ReporteEstadisticas.tsx'
+import ReporteProductosRentabilidad from './pages/reporteProductosRentabilidad/ReporteProductosRentabilidad.tsx'
+import ReporteProductosVendidos from './pages/reporteProductosVendidos/ReporteProductosVendidos.tsx'
+import ReporteVentasMensuales from './pages/reporteVentasMensuales/ReporteVentasMensuales.tsx'
 
 
-
+const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Productos/>}/>
@@ -32,7 +39,15 @@ createRoot(document.getElementById('root')!).render(
         <Route path='/estadoEnvio' element={<EstadoEnvio/>}/>
         <Route path='/inventario' element={<MisProductos/>}/>
         <Route path='/pedirProductos' element={<SolicitarProductos/>}/>
+        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/reporteEstadisticas' element={<ReporteEstadisticas/>}/>
+        <Route path='/reporteRentabilidad' element={<ReporteProductosRentabilidad/>}/>
+        <Route path='/reporteProdVendidos' element={<ReporteProductosVendidos/>}/>
+        <Route path='/reporteVentasMensuales' element={<ReporteVentasMensuales/>}/>
+
       </Routes>
     </BrowserRouter>
+    </QueryClientProvider>
+    
   </StrictMode>,
 )

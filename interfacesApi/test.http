@@ -1,6 +1,101 @@
 ### para hacer peticiones a la api
-GET http://localhost:3000/api/getExampleUsers
+GET http://localhost:3000/api/obtenerproductos
 
+### para hacer peticiones a la api
+GET http://localhost:3000/api/obtenerproducto/1
+
+### para hacer peticiones a la api
+GET http://localhost:3000/api/obtenerCiudades
+
+###obtener productos por id
+GET http://localhost:3000/api/obtenerproductosVendedor/1
+
+###obtener productos por id
+GET http://localhost:3000/api/obtenerVendedor/12
+
+###obtener productos por id
+GET http://localhost:3000/api/obtenerVendedorProductos/12
+
+###obtener productos por id
+GET http://localhost:3000/api/obtenerEnviosVendedor/1
+
+###obtener productos por id
+GET http://localhost:3000/api/obtenerEnvio/1
+
+
+###obtener productos por id
+GET http://localhost:3000/api/obtenerDetalleEnvio/12345623
+
+###obtener productos por id
+GET http://localhost:3000/api/obtenerDetalleEnvioVendedor/2
+
+
+###obtener productos por id
+GET http://localhost:3000/api/obtenerEstadisticas/1
+
+
+###obtener productos por id
+POST  http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+    "email": "carlos.gomez@ejemplo.com",
+    "password": "12345678"
+}
+
+
+
+###obtener productos por id
+POST  http://localhost:3000/api/crearCompra
+Content-Type: application/json
+
+{
+    "id_vendedor": 1,
+    "id_producto": 1,
+    "cantidad": 20,
+    "id_comprador":1090128,
+    "direccionEnvio":"calle 123",
+    "id_ciudad": 2
+}
+
+
+###obtener productos por id
+POST  http://localhost:3000/api/crearVendedor
+Content-Type: application/json
+
+{
+    "id": 19,
+    "nombre": "Marina",
+    "apellido": "Gomez",
+    "telefono": 56342,
+    "email": "marina@gmail.com",
+    "password": "12345",
+    "vendedor_referido": 12,
+    "desc_direccion": "calle 4234",
+    "id_ciudad": 3
+}
+
+
+
+###obtener productos por id
+PUT  http://localhost:3000/api/llenarInventario
+Content-Type: application/json
+
+{
+    "id_vendedor":12,
+    "cantidad": 35,
+    "idproducto": 3
+}
+
+
+
+### Create user
+DELETE http://localhost:3000/api/eliminarVendedor/1765394
+
+
+
+### Create user
+PUT  http://localhost:3000/api/actualizarCategorias 
 
 ### Create user
 POST http://localhost:3000/api/getExampleUsers
@@ -9,3 +104,21 @@ POST http://localhost:3000/api/getExampleUsers
 
 ### Create user
 POST http://localhost:3000/api/initDB
+
+
+
+
+
+#### Reportes de la bd
+
+###reporte 1
+GET http://localhost:3000/api/estadisticasVentasVendedores
+
+###reporte 2
+GET http://localhost:3000/api/reportesProductosMasVendidos
+
+###reporte 3
+GET http://localhost:3000/api/reporteVentasMensuales
+
+###reporte 4
+GET http://localhost:3000/api/reporteProductosRentabilidad

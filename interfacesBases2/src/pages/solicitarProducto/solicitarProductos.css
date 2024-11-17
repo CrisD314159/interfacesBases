@@ -3,3 +3,14 @@
     justify-content: space-evenly;
     margin-top: 10px;
 }
+
+.pedir{
+    height: 600px;
+}
+
+.buttonContCont{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10px;
+}

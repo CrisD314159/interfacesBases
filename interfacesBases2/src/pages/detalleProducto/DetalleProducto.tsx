@@ -2,41 +2,66 @@ import { NavLink, useParams } from "react-router-dom";
 import Header from "../../components/header/Header";
 import './detalleProducto.css'
 import { Button } from "@mui/material";
+import { Producto } from "../productos/Productos";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+
+export interface ProductoResponse{
+  success: boolean,
+  data: Producto
+}
+
+interface Oferta{
+  VENDEDOR_ID: number,
+  VENDEDOR_NOMBRE: string,
+  STOCK: number
+}
+
+interface OfertaResponse{
+  success: boolean,
+  data: Oferta[]
+}
 
 export default function DetalleProducto(){
+  const [producto, setProducto] = useState<Producto>()
+  const [ofertas, setOfertas] = useState<Oferta[]>([])
   const {id} = useParams()
   console.log(id);
-  const producto = {
-    id: 1,
-    nombre: 'Producto 1',
-    precio: 1000,
-    descripcion: 'Descripcion del producto 1',
-    imagen: 'https://cdn-icons-png.freepik.com/512/8787/8787075.png'
-  }
-
-  const ofertas = [
-    {
-      id: 1,
-      nombreVendedor: 'Juan',
-      precio: 500
+  const productoMutation = useMutation<ProductoResponse, Error, string>({
+    mutationFn: async (id) => {
+      const response = await fetch(`http://localhost:3000/api/obtenerproducto/${id}`)
+      const data = await response.json()
+      return data
     },
-    {
-      id: 2,
-      nombreVendedor: 'Pedro',
-      precio: 600
+    onSuccess: (data) => {
+      setProducto(data.data)
     },
-    {
-      id: 3,
-      nombreVendedor: 'Maria',
-      precio: 700
-    },
-    {
-      id: 4,
-      nombreVendedor: 'Jose',
-      precio: 800
+    onError: (error) => {
+      console.error(error)
     }
-    
-  ]
+  })
+
+  const ofertasMutation = useMutation<OfertaResponse, Error, string>({
+    mutationFn: async (id) => {
+      const response = await fetch(`http://localhost:3000/api/obtenerproductosVendedor/${id}`)
+      const data = await response.json()
+      return data
+    },
+    onSuccess: (data) => {
+      setOfertas(data.data)
+    },
+    onError: (error) => {
+      console.error(error)
+    }
+  })
+
+  useEffect(()=>{
+    if(id) {
+      localStorage.setItem('idProducto', id)
+      productoMutation.mutate(id)
+      ofertasMutation.mutate(id)
+    }
+  },[])
   return(
     <div>
       <Header/>
@@ -45,12 +70,12 @@ export default function DetalleProducto(){
         <div className="mainProductContainer">
           <div className="productContainer">
             <div className="imgContainer">
-              <img src={producto.imagen} alt="" className="productImg"/>
+              <img src="https://play-lh.googleusercontent.com/XgVRjdtqeVbPMZ6qyIUZH_cFbWi2WfaWNZXFhyzy1xzKg2qTRrFqxfaUMzwxSTa5Orw" alt="" className="productImg"/>
             </div>
             <div className="productDescriptionContainer">
-              <h2 className="productTitle">{producto.nombre}</h2>
-              <p className="productDescription">{producto.descripcion}</p>
-              <p className="productPrice">Precio: ${producto.precio}</p>
+              <h2 className="productTitle">{producto?.NOMBRE}</h2>
+              <p className="productDescription">{producto?.DESCRIPCIÓN}</p>
+              <p className="productPrice">Precio: ${producto?.PRECIO}</p>
             </div>
           </div>
         </div>
@@ -60,11 +85,12 @@ export default function DetalleProducto(){
         
         <div className="ofertasContainer">
           {
-            ofertas.map((oferta)=>{
+            ofertas.map((oferta:Oferta)=>{
               return(
-                <div key={oferta.id} className="ofertaContainer">
-                  <p className="nombreVendedor">Vendedor: {oferta.nombreVendedor}</p>
-                  <NavLink to={`/checkout/${oferta.id}`} className="comprarLink"><Button variant="contained">Comprar</Button></NavLink>
+                <div key={oferta.VENDEDOR_ID} className="ofertaContainer">
+                  <p className="nombreVendedor">Vendedor: {oferta.VENDEDOR_NOMBRE}</p>
+                  <p className="stockVendedor">Stock: {oferta.STOCK}</p>
+                  <NavLink to={`/checkout/${oferta.VENDEDOR_ID}`} className="comprarLink"><Button variant="contained">Comprar</Button></NavLink>
                 </div>
               )
             })

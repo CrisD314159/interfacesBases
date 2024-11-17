@@ -15,6 +15,7 @@ export default function LoginHeader() {
           <li><NavLink to={'/dashboard'}><Button variant="outlined">Ir al Dashboard</Button></NavLink></li>
           <li><NavLink to={'/despachos'}><Button variant="outlined">Mis despachos</Button></NavLink></li>
           <li><NavLink to={'/inventario'}><Button variant="outlined">Mis Productos</Button></NavLink></li>
+          <li><NavLink to={'/profile'}><Button variant="outlined">Mi Perfil</Button></NavLink></li>
         </ul>
       </nav>
     </header>

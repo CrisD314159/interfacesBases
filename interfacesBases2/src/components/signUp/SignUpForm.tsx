@@ -1,7 +1,42 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './SignUpForm.css'
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+
+
+interface RegistryValues {
+    id: number,
+    nombre: string,
+    apellido: string,
+    telefono : number,
+    email: string,
+    password: string,
+    vendedor_referido: number,
+    desc_direccion: string,
+    id_ciudad: number,
+}
+
+interface RegistryResponse {
+  success: boolean,
+  message: string,
+}
+
+interface Ciudad{
+  ID: number,
+  NOMBRE: string,
+  CODIGO_POSTAL: number,
+  DEPARTAMENTO: string
+}
+
+interface CiudadResponse{
+  success: boolean,
+  data: Ciudad[]
+}
+
 export default function SignUpForm() {
+  const [ciudades, setCiudades] = useState<Ciudad[]>()
+  const [ciudad, setCiudad] = useState<number>(1)
   const [codigo, setCodigo] = useState('');
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -9,23 +44,68 @@ export default function SignUpForm() {
   const [email, setEmail] = useState('');
   const [contrasenia, setContrasenia] = useState('');
   const [direccion, setDireccion] = useState('');
-  const [ciudad, setCiudad] = useState('');
-  const [departamento, setDepartamento] = useState('');
+  const [referido, setReferido] = useState('');
+  const navigate = useNavigate()
+
+  const registryMutation = useMutation<RegistryResponse, Error, RegistryValues>({
+    mutationFn: async (values) => {
+      const response = await fetch(`http://localhost:3000/api/crearVendedor`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      })
+      const data = await response.json()
+      return data
+    },
+    onSuccess: (data) => {
+      if(data.success){
+        alert('Registro exitoso')
+        navigate('/login')
+
+      }else{
+        alert('Error al registrarse')
+      }
+    },
+    onError: (error) => {
+      console.error(error)
+    }
+  })
+
+  const ciudadesMutation = useMutation<CiudadResponse, Error>({
+    mutationFn: async () => {
+      const response = await fetch(`http://localhost:3000/api/obtenerCiudades`)
+      const data = await response.json()
+      return data
+    },
+    onSuccess: (data) => {
+      setCiudades(data.data)
+    },
+    onError: (error) => {
+      console.error(error)
+    }
+  })
   
   const handleSubmit = ()=>{
-    const registry = {
-      codigo,
+    const registry:RegistryValues = {
+      id:Number(codigo),
       nombre,
       apellido,
-      telefono,
+      telefono:Number(telefono),
       email,
-      contrasenia,
-      direccion,
-      ciudad,
-      departamento
+      password:contrasenia,
+      vendedor_referido:Number(referido),
+      desc_direccion: direccion,
+      id_ciudad:Number(ciudad)
     }
-    console.log(registry);
+    registryMutation.mutate(registry)
   }
+
+  useEffect(()=>{
+    ciudadesMutation.mutate()
+  },[])
+
   return(
     <form action="" className="signUpForm" onSubmit={(e)=> {
       e.preventDefault()
@@ -72,6 +152,13 @@ export default function SignUpForm() {
                   value={direccion}
                   required
                 />
+                <TextField id="outlined-basic" type="text" label="Cédula referido" variant="outlined" sx={{ marginBottom: '25px', width: '100%' , marginLeft:'10px'}}
+                    onChange={(e) => {
+                      setReferido(e.target.value)
+                    }}
+                    value={referido}
+                    required
+                  />
               </div>
 
               <div className="inputsContainer">
@@ -99,26 +186,11 @@ export default function SignUpForm() {
                     id="demo-simple-select"
                     value={ciudad}
                     label="Ciudad"
-                    onChange={(e)=>{setCiudad(e.target.value)}}
+                    onChange={(e)=>{setCiudad(Number(e.target.value))}}
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth sx={{marginLeft:'10px'}}>
-                  <InputLabel id="demo-simple-select-label">Departamento</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={departamento}
-                    label="Departamento"
-                    onChange={(e)=>{setDepartamento(e.target.value)}}
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {ciudades?.map((ciudad) => (
+                      <MenuItem key={ciudad.ID} value={ciudad.ID}>{ciudad.NOMBRE}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>

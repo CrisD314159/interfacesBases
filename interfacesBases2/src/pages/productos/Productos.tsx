@@ -2,57 +2,70 @@ import { Button } from "@mui/material"
 import Header from "../../components/header/Header"
 import './productos.css'
 import { NavLink } from "react-router-dom"
+import { useMutation } from "@tanstack/react-query"
+import { useEffect, useState } from "react"
+
+export interface Producto{
+  ID: number,
+  NOMBRE: string,
+  DESCRIPCIÓN: string,
+  TIPOPRODUCTO: number,
+  STOCK: number,
+  PRECIO: number
+
+}
+
+interface ProductoResponse{
+  success: boolean,
+  data: Producto[]
+}
+
+async function obtenerProductos(){
+  const response = await fetch('http://localhost:3000/api/obtenerproductos')
+  const data = await response.json()
+  return data
+}
 
 export default function Productos(){
-  const ejemploProductos = [
-    {
-      id: 1,
-      nombre: 'Producto 1',
-      precio: 1000,
-      descripcion: 'Descripcion del producto 1',
-      imagen: ''
+  const [productos, setProductos] = useState<Producto[]>([])
+
+  const productosMutation = useMutation<ProductoResponse, Error>({
+    mutationFn:obtenerProductos,
+    onSuccess: (data) => {
+      setProductos(data.data)
     },
-    {
-      id: 2,
-      nombre: 'Producto 2',
-      precio: 2000,
-      descripcion: 'Descripcion del producto 2',
-      imagen: ''
-    },
-    {
-      id: 3,
-      nombre: 'Producto 3',
-      precio: 3000,
-      descripcion: 'Descripcion del producto 3',
-      imagen: ''
+    onError: (error) => {
+      console.error(error)
     }
-  ]
+    
+  })
+
+
+  useEffect(()=>{
+    productosMutation.mutate()
+  },[])
   return(
     <div>
       <Header/>
       <div className="productsMainContainer">
         <h1 className="productosTitle">Productos Destacados en VitalisPro</h1>
-        <NavLink to={'/misProductos'} className="productLink"><Button variant="outlined">Añadir al inventario</Button></NavLink>
         <div className="productosContainer">
           <div className="productosList">
             {
-              ejemploProductos.map((producto)=>{
+              productos.map((producto:Producto)=>{
                 return(
-                  <div key={producto.id} className="productoCard">
+                  <div key={producto.ID} className="productoCard">
                     <div className="productoImageContainer">
-                      {
-                        producto.imagen !== '' ? 
-                        <img src={producto.imagen} alt={producto.nombre} className="productoImage"/>
-                        :
-                        <img src="https://cdn-icons-png.freepik.com/512/8787/8787075.png" alt={producto.nombre} className="productoImage"/>
-                      }
+                  
+                        <img src="https://play-lh.googleusercontent.com/XgVRjdtqeVbPMZ6qyIUZH_cFbWi2WfaWNZXFhyzy1xzKg2qTRrFqxfaUMzwxSTa5Orw" alt={producto.NOMBRE} className="productoImage"/>
+                      
                     </div>
                     <div className="productoInfoContainer">
-                      <h3 className="productoName">{producto.nombre}</h3>
-                      <p className="productoDescription">{producto.descripcion}</p>
-                      <p className="productoPrice">Precio: ${producto.precio}</p>
+                      <h3 className="productoName">{producto.NOMBRE}</h3>
+                      <p className="productoDescription">{producto.DESCRIPCIÓN}</p>
+                      <p className="productoPrice">Precio: ${producto.PRECIO}</p>
                     </div>
-                    <NavLink to={`/producto/${producto.id}`} className="productLink">
+                    <NavLink to={`/producto/${producto.ID}`} className="productLink">
                       <Button variant="contained">Ver Detalle</Button>
 
                     </NavLink>
