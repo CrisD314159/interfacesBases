@@ -4,6 +4,7 @@ import './productos.css'
 import { NavLink } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
+import formatCurrency from "../formatCurrency"
 
 export interface Producto{
   ID: number,
@@ -63,7 +64,7 @@ export default function Productos(){
                     <div className="productoInfoContainer">
                       <h3 className="productoName">{producto.NOMBRE}</h3>
                       <p className="productoDescription">{producto.DESCRIPCIÓN}</p>
-                      <p className="productoPrice">Precio: ${producto.PRECIO}</p>
+                      <p className="productoPrice">Precio: ${formatCurrency(producto.PRECIO)}</p>
                     </div>
                     <NavLink to={`/producto/${producto.ID}`} className="productLink">
                       <Button variant="contained">Ver Detalle</Button>

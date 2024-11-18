@@ -1,14 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import './reporteEstadisticas.css'
+import formatCurrency from "../formatCurrency";
 
 interface ReporteItem{
   VENDEDOR_ID: number,
   VENDEDOR_NOMBRE: string,
+  VENDEDOR_APELLIDO: string,
   TOTAL_VENTAS: number,
   TOTAL_PRODUCTOS_VENDIDOS: number,
   TOTAL_INGRESOS: number
-  TOTAL_COMISIONES: number
+  TOTAL_COMISIONES: number,
+  CANT_REF: number
 }
 
 interface ReporteResponse{
@@ -52,11 +55,12 @@ const ReporteEstadisticas = () => {
     <div className="report-body">
       {reporte.map((item: ReporteItem) => (
         <div key={item.VENDEDOR_ID} className="report-card">
-          <h2 className="report-card-title">{item.VENDEDOR_NOMBRE}</h2>
+          <h2 className="report-card-title">{item.VENDEDOR_NOMBRE} {item.VENDEDOR_APELLIDO}</h2>
           <p className="report-card-detail">Cantidad total ventas: {item.TOTAL_VENTAS}</p>
+          <p className="report-card-detail">Cantidad total de referidos: {item.CANT_REF}</p>
           <p className="report-card-detail">Total productos vendidos: {item.TOTAL_PRODUCTOS_VENDIDOS}</p>
-          <p className="report-card-detail">Total ingresos: {item.TOTAL_INGRESOS}</p>
-          <p className="report-card-detail">Total comisiones: {item.TOTAL_COMISIONES}</p>
+          <p className="report-card-detail">Total ingresos: ${formatCurrency(item.TOTAL_INGRESOS)}</p>
+          <p className="report-card-detail">Total comisiones: ${formatCurrency(item.TOTAL_COMISIONES)}</p>
         </div>
       ))}
     </div>

@@ -145,6 +145,7 @@ router.get('/obtenerEnviosVendedor/:id', async (req, res) => {
        ES.descripción,
        d.DESCRIPCIÓN AS direccion_descripcion,
        v.ID AS venta_id,
+       v.Id_comprador AS comprador_id,
        p.NOMBRE AS producto_nombre,
        vendedor.ID AS vendedor_id,
        vendedor.NOMBRE AS vendedor_nombre
@@ -179,7 +180,7 @@ router.get('/obtenerDetalleEnvio/:id', async (req, res) => {
   try {
     const connection = await getConnection();
     const result = await connection.execute(`
-    SELECT E.ID AS ID_ENVIO, ES.DESCRIPCIÓN AS ESTADO, D.DESCRIPCIÓN AS DIRECCION, C.NOMBRE AS CIUDAD, E.FECHA_ENVIO AS FECHA, VEN.NOMBRE AS VENDEDOR
+    SELECT E.ID AS ID_ENVIO, V.Id_comprador AS COMPRADOR_ID, ES.DESCRIPCIÓN AS ESTADO, D.DESCRIPCIÓN AS DIRECCION, C.NOMBRE AS CIUDAD, E.FECHA_ENVIO AS FECHA, VEN.NOMBRE AS VENDEDOR
 FROM ENVIO E
 JOIN VENTA V ON V.ID = E.VENTA
 JOIN DIRECCION D ON D.ID = E.DIRECCION
@@ -189,9 +190,14 @@ JOIN VENDEDOR VEN ON VEN.ID = V.VENDEDOR
 WHERE V.ID_COMPRADOR = :id
       `, [id], { resultSet: true, outFormat: oracledb.OUT_FORMAT_OBJECT });
     const rs = result.resultSet; 
-    const row = await rs.getRow();
+    let rows = []; 
+    let row;
+    while ((row = await rs.getRow())) {   
+      rows.push(row); 
+    }
+    console.log(rows); 
 
-    res.json({success: true, data: row});
+    res.json({success: true, data: rows});
   } catch (error) {
     console.log("Error al obtener la conexión", error);
     res.json({success: false, data: []});
@@ -229,7 +235,7 @@ router.get('/obtenerDetalleEnvioVendedor/:id', async (req, res) => {
   try {
     const connection = await getConnection();
     const result = await connection.execute(`
-    SELECT E.ID AS ID_ENVIO, ES.DESCRIPCIÓN AS ESTADO, D.DESCRIPCIÓN AS DIRECCION, C.NOMBRE AS CIUDAD, E.FECHA_ENVIO AS FECHA, VEN.NOMBRE AS VENDEDOR
+    SELECT E.ID AS ID_ENVIO, V.Id_comprador AS COMPRADOR_ID, ES.DESCRIPCIÓN AS ESTADO, D.DESCRIPCIÓN AS DIRECCION, C.NOMBRE AS CIUDAD, E.FECHA_ENVIO AS FECHA, VEN.NOMBRE AS VENDEDOR
 FROM ENVIO E
 JOIN VENTA V ON V.ID = E.VENTA
 JOIN DIRECCION D ON D.ID = E.DIRECCION
@@ -629,17 +635,20 @@ router.get('/estadisticasVentasVendedores', async (req, res) => {
     // Consulta SQL
     const query = `
       SELECT v.ID AS vendedor_id,
-             v.NOMBRE AS vendedor_nombre,
-             COUNT(ve.ID) AS total_ventas,
-             SUM(dv.CANTIDAD) AS total_productos_vendidos,
-             SUM(dv.CANTIDAD * dv.VALORUNITARIO) AS total_ingresos,
-             SUM(c.VALORCOMISION) AS total_comisiones
-      FROM VENDEDOR v
-      LEFT JOIN VENTA ve ON v.ID = ve.VENDEDOR
-      LEFT JOIN DETALLEVENTA dv ON ve.ID = dv.VENTA
-      LEFT JOIN COMISION c ON c.VENDEDOR = v.ID
-      GROUP BY v.ID, v.NOMBRE
-      ORDER BY total_ingresos DESC
+       v.NOMBRE AS vendedor_nombre,
+       v.APELLIDO AS vendedor_apellido,
+       COUNT(DISTINCT ve.ID) AS total_ventas,
+       NVL(SUM(dv.CANTIDAD),0) AS total_productos_vendidos,
+       NVL(SUM(dv.CANTIDAD * dv.VALORUNITARIO),0) AS total_ingresos,
+       NVL(SUM(c.VALORCOMISION),0) AS total_comisiones,
+       COUNT(vr.ID) AS cant_ref
+FROM VENDEDOR v
+LEFT JOIN VENTA ve ON v.ID = ve.VENDEDOR
+LEFT JOIN DETALLEVENTA dv ON ve.ID = dv.VENTA
+LEFT JOIN COMISION c ON c.VENDEDOR = v.ID
+LEFT JOIN VENDEDOR vr ON vr.VENDEDOR_REFERIDO = v.ID
+GROUP BY v.ID, v.NOMBRE, v.APELLIDO
+ORDER BY total_ingresos DESC
     `;
 
     // Ejecutar la consulta
@@ -675,11 +684,11 @@ router.get('/reportesProductosMasVendidos', async (req, res) => {
 
     // Consulta SQL
     const query = `
-    SELECT  ciu.NOMBRE AS ciudad,
+   SELECT  ciu.NOMBRE AS ciudad,
        p.ID AS producto_id,
        p.NOMBRE AS producto_nombre,
-       SUM(dv.CANTIDAD) AS total_vendido,
-       SUM(dv.CANTIDAD * dv.VALORUNITARIO) AS total_ingresos
+       NVL(SUM(dv.CANTIDAD),0) AS total_vendido,
+       NVL(SUM(dv.CANTIDAD * dv.VALORUNITARIO),0) AS total_ingresos
 FROM DETALLEVENTA dv
 JOIN PRODUCTO p ON dv.PRODUCTO = p.ID
 JOIN VENTA ve ON dv.VENTA = ve.ID
@@ -723,10 +732,10 @@ router.get('/reporteVentasMensuales', async (req, res) => {
 
     // Consulta SQL
     const query = `
-  SELECT TO_CHAR(ve.FECHA_VENTA, 'YYYY-MM') AS mes,
+SELECT TO_CHAR(ve.FECHA_VENTA, 'YYYY-MM') AS mes,
        COUNT(ve.ID) AS total_ventas,
-       SUM(dv.CANTIDAD) AS total_productos_vendidos,
-       SUM(dv.CANTIDAD * dv.VALORUNITARIO) AS total_ingresos
+       NVL(SUM(dv.CANTIDAD),0) AS total_productos_vendidos,
+       NVL(SUM(dv.CANTIDAD * dv.VALORUNITARIO),0) AS total_ingresos
 FROM VENTA ve
 JOIN DETALLEVENTA dv ON ve.ID = dv.VENTA
 GROUP BY TO_CHAR(ve.FECHA_VENTA, 'YYYY-MM')
@@ -765,11 +774,11 @@ router.get('/reporteProductosRentabilidad', async (req, res) => {
 
     // Consulta SQL
     const query = `
-  SELECT p.ID AS producto_id,
+SELECT p.ID AS producto_id,
        p.NOMBRE AS producto_nombre,
-       SUM(dv.CANTIDAD * dv.VALORUNITARIO) AS total_ingresos,
-       SUM(c.VALORCOMISION) AS total_comisiones,
-       (SUM(dv.CANTIDAD * dv.VALORUNITARIO) - SUM(c.VALORCOMISION)) AS rentabilidad
+      NVL( SUM(dv.CANTIDAD * dv.VALORUNITARIO),0) AS total_ingresos,
+      NVL( SUM(c.VALORCOMISION),0) AS total_comisiones,
+       NVL((SUM(dv.CANTIDAD * dv.VALORUNITARIO) - SUM(c.VALORCOMISION)) ,0)AS rentabilidad
 FROM PRODUCTO p
 JOIN DETALLEVENTA dv ON p.ID = dv.PRODUCTO
 JOIN VENTA ve ON dv.VENTA = ve.ID

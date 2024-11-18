@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import './reporteProductosVentas.css'
+import formatCurrency from "../formatCurrency";
 
 interface ReporteItem{
   CIUDAD: string,
@@ -56,7 +57,7 @@ const ReporteProductosVendidos = () => {
             <h2 className="sales-report-card-city">{item.CIUDAD}</h2>
             <p className="sales-report-card-detail">Producto: {item.PRODUCTO_NOMBRE}</p>
             <p className="sales-report-card-detail">Total vendido: {item.TOTAL_VENDIDO}</p>
-            <p className="sales-report-card-detail">Total ingresos: {item.TOTAL_INGRESOS}</p>
+            <p className="sales-report-card-detail">Total ingresos: ${formatCurrency(item.TOTAL_INGRESOS)}</p>
           </div>
         ))}
       </div>

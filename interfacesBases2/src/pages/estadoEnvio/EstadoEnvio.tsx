@@ -19,10 +19,10 @@ export interface Envio{
 
 interface EnvioResponse{
   success: boolean,
-  data: Envio
+  data: Envio[]
 }
 export default function EstadoEnvio(){
-  const [envio, setEnvio] = useState<Envio>()
+  const [envio, setEnvio] = useState<Envio[]>([])
   const [id, setId] = useState('')
   const [num, setNum] = useState(0)
 
@@ -62,7 +62,7 @@ export default function EstadoEnvio(){
           e.preventDefault()
           handleSubmit()
         }}>
-          <TextField type="text" name="idEnvio" id="idEnvio" label="Id envío" placeholder="Ingrese el ID del envio" value={id} required onChange={(e) => {
+          <TextField type="text" name="Cédula" id="idEnvio" label="Cédula" placeholder="Ingrese su cédula" value={id} required onChange={(e) => {
             setId(e.target.value)
           }}/>
           <Button type="submit" variant="contained" sx={{marginTop:'30px'}}>Consultar</Button>
@@ -70,15 +70,23 @@ export default function EstadoEnvio(){
         <div className="detalleEnvioMain">
           {
             num === 1 &&(
-            <div key={envio?.ID_ENVIO} className="detalleDespachoCard">
+              envio.map((envio) => {
+                return(
+                  <div key={envio?.ID_ENVIO} className="detalleDespachoCard">
               <h2 className="despachoName despachoP">Nombre del Vendedor: {envio?.VENDEDOR}</h2>
               <p className="despachoDireccion despachoP">Dirección: {envio?.DIRECCION}</p>
               <p className="despachoCiudad despachoP">Ciudad: {envio?.CIUDAD}</p>
               <p className="despachoFecha despachoP">Fecha: {envio?.FECHA}</p>
               <p className="despachoEstado despachoP">Estado: {envio?.ESTADO}</p>
             </div>
+                )
+              }
+
+            
             )
+          )
           }
+        
           
           
         </div>

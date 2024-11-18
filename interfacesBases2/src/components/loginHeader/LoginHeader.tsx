@@ -6,7 +6,7 @@ import './header.css'
 export default function LoginHeader() {
   return (
     <header className="headerComponent">
-      <NavLink to={'/'}>
+      <NavLink to={'/dashboard'}>
         <h1 className="headerTitle">VitalisPro</h1>
       </NavLink>
       <nav className="navContainer">

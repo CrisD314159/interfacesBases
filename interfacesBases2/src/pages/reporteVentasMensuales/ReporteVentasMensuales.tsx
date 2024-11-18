@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import './reporteVentasMensuales.css'
+import formatCurrency from "../formatCurrency";
 
 interface ReporteItem{
   MES: string,
@@ -16,6 +17,7 @@ interface ReporteResponse{
 
 const ReporteVentasMensuales = () => {
   const [reporte, setReporte] = useState<ReporteItem[]>([]);
+
 
   const reporteMutation = useMutation<ReporteResponse, Error>({
     mutationFn: async ()=>{
@@ -51,9 +53,9 @@ const ReporteVentasMensuales = () => {
         {reporte.map((item: ReporteItem) => (
           <div key={item.MES} className="monthly-sales-report-card">
             <h2 className="monthly-sales-report-card-title">Mes: {item.MES}</h2>
-            <p className="monthly-sales-report-card-detail">Total vendido: {item.TOTAL_VENTAS}</p>
+            <p className="monthly-sales-report-card-detail">Total vendido:${ item.TOTAL_VENTAS}</p>
             <p className="monthly-sales-report-card-detail">Total productos vendidos: {item.TOTAL_PRODUCTOS_VENDIDOS}</p>
-            <p className="monthly-sales-report-card-detail">Total ingresos: {item.TOTAL_INGRESOS}</p>
+            <p className="monthly-sales-report-card-detail">Total ingresos: ${formatCurrency(item.TOTAL_INGRESOS)}</p>
           </div>
         ))}
       </div>

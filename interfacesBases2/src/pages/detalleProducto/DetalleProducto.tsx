@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import { Producto } from "../productos/Productos";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import formatCurrency from "../formatCurrency";
 
 export interface ProductoResponse{
   success: boolean,
@@ -75,7 +76,7 @@ export default function DetalleProducto(){
             <div className="productDescriptionContainer">
               <h2 className="productTitle">{producto?.NOMBRE}</h2>
               <p className="productDescription">{producto?.DESCRIPCIÓN}</p>
-              <p className="productPrice">Precio: ${producto?.PRECIO}</p>
+              <p className="productPrice">Precio: ${formatCurrency(producto?.PRECIO || 0)}</p>
             </div>
           </div>
         </div>

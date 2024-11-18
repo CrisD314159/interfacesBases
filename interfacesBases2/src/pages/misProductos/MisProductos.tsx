@@ -4,6 +4,7 @@ import './misProductos.css'
 import { Button } from "@mui/material"
 import { useMutation } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
+import formatCurrency from "../formatCurrency"
 
 interface DetalleInvetario{
   ID: number,
@@ -74,7 +75,7 @@ useEffect(()=>{
                     <div className="productoInfoContainer">
                       <h3 className="productoName">{producto.NOMBRE}</h3>
                       <p className="productoDescription">{producto.DESCRIPCIÓN_1}</p>
-                      <p className="productoPrice">Precio: ${producto.PRECIO}</p>
+                      <p className="productoPrice">Precio: ${formatCurrency(producto.PRECIO)}</p>
                       <p className="productoPrice">Cantidad en invetario: {producto.CANTIDAD}</p>
                     </div>
                   </div>

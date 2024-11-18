@@ -3,6 +3,7 @@ import { Button } from "@mui/material"
 import { useEffect, useState } from "react"
 import './solicitarProductos.css'
 import { useMutation } from "@tanstack/react-query"
+import formatCurrency from "../formatCurrency"
 
 export interface Producto{
   ID: number,
@@ -142,7 +143,7 @@ export default function SolicitarProductos() {
                 <div className="productoInfoContainer">
                   <h3 className="productoName">{producto.NOMBRE}</h3>
                   <p className="productoDescription">{producto.DESCRIPCIÓN}</p>
-                  <p className="productoPrice">Precio: ${producto.PRECIO}</p>
+                  <p className="productoPrice">Precio: ${formatCurrency( producto.PRECIO)}</p>
                   <p className="productoPrice">Cantidad disponible: {producto.STOCK}</p>
                   <p className="productoPrice">
                     Cantidad a pedir: {isEditing ? cantPedir.cantPedir : 0}

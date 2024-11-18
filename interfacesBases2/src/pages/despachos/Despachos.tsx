@@ -73,6 +73,8 @@ export default function Despachos(){
                 <p className="despachoDireccion">Dirección: {despacho.DIRECCION_DESCRIPCION}</p>
                 <p className="despachoFecha">Fecha: {despacho.FECHA_ENVIO}</p>
                 <p className="despachoEstado">Estado: {despacho.DESCRIPCIÓN}</p>
+                <p className="despachoEstado">Cédula de comprador: {despacho.COMPRADOR_ID}</p>
+
                 <NavLink to={`/despachos/${despacho.ENVIO_ID}`} className="verDespachoLink"><Button variant="contained">Ver Detalle</Button></NavLink>
               </div>
             ))

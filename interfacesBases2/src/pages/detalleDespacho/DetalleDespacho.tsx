@@ -8,6 +8,7 @@ import { Button } from '@mui/material';
 
 interface Despacho {
   ID_ENVIO: number,
+  COMPRADOR_ID: number,
   ESTADO: string,
   DIRECCION: string,
   CIUDAD: string,
@@ -99,6 +100,7 @@ export default function DetalleDespacho(){
           <p className="despachoCiudad despachoP">Ciudad: {despacho?.CIUDAD}</p>
           <p className="despachoFecha despachoP">Fecha: {despacho?.FECHA}</p>
           <p className="despachoEstado despachoP">Estado: {despacho?.ESTADO}</p>
+          <p className="despachoEstado despachoP">Id del comprador: {despacho?.COMPRADOR_ID}</p>
         </div>
         <div className="detalleDespachoButtons">
           <Button onClick={()=>handleCLick(1)} sx={{margin:'10px'}} variant='contained' className="detalleDespachoButton">Marcar como Pendiente</Button>
